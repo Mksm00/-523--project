@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Браузер игр
+{% endblock %}
+
+{% block body %}
+{% if current_user.is_authenticated %}
+    <div class="menubar">
+        Ваш профиль: {{ current_user.name }}
+        <a href="/logout">Выйти</a>
+        <a href="/config">Сетап</a>
+    </div>
+    <hr>
+{% else %}
+    <p> Вы не вошли в аккаунт</p>
+{% endif %}
+<form class="search-form" method="post">
+    {{ form.hidden_tag() }}
+    <div class="filter-search">{{ form.genre.label }} {{ form.genre }}</div>
+    <div class="filter-search">{{ form.developer.label }} {{ form.developer }}</div>
+    <div class="filter-search">{{ form.year.label }} {{ form.year }}</div>
+    <div class="filter-search">{{ form.submit(type="submit") }}</div>
+</form>
+<ol class="bullet">
+    {% for item in games %}
+    <li><a href='/browser/{{ item.id }}'> {{ item.name }} </a>| Год выпуска: {{ item.year }} | Жанр: {{ item.genre }} | Разработчик: {{ item.developer }}</li>
+    {% endfor %}
+</ol>
+{% endblock %}
