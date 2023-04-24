@@ -1,7 +1,7 @@
 from flask import Flask, url_for, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
-from data import db_session
+from data import db_session, games_api, cpu_api, card_api
 from data.users import User
 from data.games import Games
 from data.user_config import User_setup
@@ -18,6 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///base111.db'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
@@ -26,7 +27,10 @@ def load_user(user_id):
 
 def main():
     db_session.global_init("db/base111.db")
-    app.run(port=8080, host='127.0.0.1', debug=True)
+    app.register_blueprint(games_api.blueprint)
+    app.register_blueprint(cpu_api.blueprint)
+    app.register_blueprint(card_api.blueprint)
+    app.run(port=8080, host='127.0.0.1')
 
 
 @app.route('/')
@@ -68,22 +72,25 @@ def enter():
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
         return render_template('enter.html',
-                           message="Неправильный логин или пароль",
-                           form=form)
+                               message="Неправильный логин или пароль",
+                               form=form)
     return render_template('enter.html', title='Авторизация', form=form)
 
+
 @app.route('/browser', methods=['POST', 'GET'])
+@login_required
 def browser():
     form = SearchForm()
     db_sess = db_session.create_session()
     games = db_sess.query(Games).all()
     games_genre = ['', 'RPG', 'Экшен', 'Симулятор', 'Приключения', 'Гонки', 'Шутер', 'Пазлы', 'Хоррор', 'Стратегия']
     games_developer = ['', 'Square Enix', 'Konami',
-    'Microsoft', 'THQ', 'Rockstar Games', 'Red Barrels',
-    'CD Projekt RED', 'GSC World Publishing', 'Mojang',
-    'Ubisoft', 'Valve Software', 'Deep Silver', 'Electronic Arts',
-    'Eidos Interactive', '4A Games', '2K Games', 'Bethesda Softworks',
-    'Blizzard Entertainment', 'Activision', 'Warner Bros. Interactive Entertainment', 'Re-Logic', 'Capcom']
+                       'Microsoft', 'THQ', 'Rockstar Games', 'Red Barrels',
+                       'CD Projekt RED', 'GSC World Publishing', 'Mojang',
+                       'Ubisoft', 'Valve Software', 'Deep Silver', 'Electronic Arts',
+                       'Eidos Interactive', '4A Games', '2K Games', 'Bethesda Softworks',
+                       'Blizzard Entertainment', 'Activision', 'Warner Bros. Interactive Entertainment', 'Re-Logic',
+                       'Capcom']
     games_year = ['', '1998', '1999', '2000', '2001', '2002', '2003',
                   '2004', '2005', '2006', '2007', '2008', '2009', '2010',
                   '2011', '2012', '2013', '2014', '2015', '2016', '2017',
@@ -98,7 +105,9 @@ def browser():
         return render_template('browser.html', games=games, form=form)
     return render_template('browser.html', games=games, form=form)
 
+
 @app.route('/browser/<int:id>')
+@login_required
 def game_page(id):
     db_sess = db_session.create_session()
     game = db_sess.query(Games).get(id)
@@ -136,11 +145,13 @@ def game_page(id):
         config = db_sess.query(User_setup).filter(User_setup.id == cui).first()
         return render_template('game_page.html', game=game, config=config, r_cpu=r_cpu, r_card=r_card)
 
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect("/")
+
 
 @app.route('/config', methods=['POST', 'GET'])
 @login_required
@@ -163,7 +174,8 @@ def set_config():
             return redirect('/browser')
         else:
             db_sess = db_session.create_session()
-            config = User_setup(id=cui, cpu=form.cpu.data, card=form.card.data, space=form.space.data, op_space=form.op_space.data)
+            config = User_setup(id=cui, cpu=form.cpu.data, card=form.card.data, space=form.space.data,
+                                op_space=form.op_space.data)
             db_sess.add(config)
             db_sess.commit()
             return redirect('/browser')
