@@ -1,0 +1,135 @@
+body {
+font: "Times New Roman", Georgia, Serif;
+}
+
+.menubar {
+font-size: 18px;
+padding: 2px;
+margin-left: 10px;
+}
+
+.about {
+font-size: 20px;
+padding: 8px;
+border: 1px solid green;
+margin: 20px;
+}
+
+a.btn{
+border-radius: 4px;
+-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.08);
+-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.08);
+box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.08);
+color: #fff;
+width:100px;
+text-align: center;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 14px;
+padding: 8px 16px;
+margin: 20px auto;
+text-decoration: none;
+text-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+-webkit-transition: background-color 0.1s linear;
+-moz-transition: background-color 0.1s linear;
+-o-transition: background-color 0.1s linear;
+transition: background-color 0.1s linear;
+}
+a.btn {
+background-color: rgb( 43, 153, 91 );
+border: 1px solid rgb( 33, 126, 74 );
+}
+
+a.btn:hover {
+background-color: rgb( 75, 183, 141 );
+}
+
+.sign-form {
+padding: 20px;
+width: 15%;
+margin: 10px auto;
+border: 2px solid green;
+text-align: center;
+}
+
+.sign-form label {
+font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+color: green;
+padding: 20px;
+}
+
+.sign-form div {
+padding: 0;
+display: block;
+list-style: none;
+margin: 10px 0 0 0;
+}
+
+.sign-form input {
+border: 1px solid green;
+width: 80%;
+height: 30px;
+}
+
+.game-list {
+text-align: center;
+}
+
+.bullet {
+margin-left: 0;
+list-style: none;
+counter-reset: li;
+}
+.bullet li {
+position: relative;
+margin-bottom: 1.5em;
+border: 3px solid #CADFCF;
+padding: 0.6em;
+border-radius: 4px;
+background: #FEFEFE;
+color: #231F20;
+font-family: "Trebuchet MS", "Lucida Sans";
+}
+.bullet li:before {
+position: absolute;
+top: -0.7em;
+padding-left: 0.4em;
+padding-right: 0.4em;
+font-size: 16px;
+font-weight: bold;
+color: #DCC24B;
+background: #FEFEFE;
+border-radius: 50%;
+counter-increment: li;
+content: counter(li);
+}
+
+.search-form {
+  display: flex;
+  margin-left: 80px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.filter-search {
+  padding-left: 20px;
+}
+
+.content {
+  padding: 100px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  background-color: #CADFCF;
+  font-size: 32px;
+  border-radius: 10px;
+}
+
+.content-wrap {
+  display: flex;
+}
+
+.cont-text {
+ margin-top: 30px;
+ margin-left: 150px;
+}
